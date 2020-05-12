@@ -1,0 +1,74 @@
+{
+  "templateid" : "Nutanix-Snapshot-VM",
+  "steps" : [ {
+    "function" : "POST",
+    "url" : "[[myNutanixPrism]]/api/nutanix/v2.0/snapshots/",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\r\n  \"snapshot_specs\": [\r\n    {\r\n      \"snapshot_name\": \"@snapshot_name\",\r\n      \"vm_uuid\": \"@vm_uuid\"\r\n    }\r\n  ]\r\n}",
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 201,
+      "responseDataCheck" : null,
+      "fileName" : null,
+      "variables" : [ {
+        "name" : "@task_uuid",
+        "value" : "task_uuid"
+      } ]
+    }
+  }, {
+    "function" : "GET",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/tasks/@task_uuid",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      }, {
+        "attribute" : "task_uuid",
+        "value" : "@task_uuid"
+      } ],
+      "body" : null,
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 200,
+      "responseDataCheck" : {
+        "goodFin" : "SUCCEEDED",
+        "badFin" : "ABORTED/SUSPENDED/FAILED",
+        "attributeToCheck" : "progress_status",
+        "poll" : true,
+        "pollDelay" : 10,
+        "pollInterval" : 5,
+        "pollMaxTime" : 1
+      },
+      "fileName" : null,
+      "variables" : [ ]
+    }
+  } ],
+  "variables" : [ {
+    "name" : "@User",
+    "value" : "[[NutanixUser]]"
+  }, {
+    "name" : "@Password",
+    "value" : "[[NutanixPwd]]"
+  }, {
+    "name" : "@vm_uuid",
+    "value" : "??????"
+  }, {
+    "name" : "@snapshot_name",
+    "value" : "??????"
+  } ],
+  "properties" : [ ]
+}

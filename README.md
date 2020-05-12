@@ -20,7 +20,7 @@ SMA Technologies assumes no liability for damage caused by the usage of any of t
 - Download the .json file
 - Create your Opcon job Type = Windows or Linux, Sub-type = Web Services and name it.
 - Import Template, choose your .json
-- On Variable tab, set @User=[[NutanixUser]], @Password=[[NutanixPwd]] and any other variable required (OpCon Properties are supported).
+- On Variable tab, check if @User=[[NutanixUser]], @Password=[[NutanixPwd]] are ok and set any other variable required (OpCon Properties are supported).
 - On Steps tab, Step1 in your job, check the body json, and modify it if need.
 - On Failure Criteria tab, set the OK return code to 200.
 - Save your Job. 

@@ -1,5 +1,5 @@
-# Project Name
-Project description
+# Opcon WebServices Templates for Nutanix RestAPI
+We share here .json templates that can be use as models to create WebServices  jobs subtypes in Opcon in order to interact with Nutanix clusters.
 
 # Disclaimer
 No Support and No Warranty are provided by SMA Technologies for this project and related material. The use of this project's files is on your own risk.
@@ -7,11 +7,23 @@ No Support and No Warranty are provided by SMA Technologies for this project and
 SMA Technologies assumes no liability for damage caused by the usage of any of the files offered here via this Github repository.
 
 # Prerequisites
-
+- Opcon V19.1
+- SMA Webservices Connector for Windows or Linux V20.0.3
+- A Nutanix Cluster running Nutanix API V2
+- Create on Opcon on global property (mandatory) for Nutanix API url: 
+    - [[myNutanixPrism]]: your Nutanix Prism API url (https://xxx.xxx.xxx.xxx:9440)
+- Create two Optionnal global properties (crypted) for Nutanix user & password:
+    - [[NutanixUser]]
+    - [[NutanixPwd]]
 
 # Instructions
-
-
+- Download the .json file
+- Create your Opcon job Type = Windows or Linux, Sub-type = Web Services and name it.
+- Import Template, choose your .json
+- On Variable tab, set @User=[[NutanixUser]], @Password=[[NutanixPwd]] and any other variable required (OpCon Properties are supported).
+- On Steps tab, Step1 in your job, check the body json, and modify it if need.
+- On Failure Criteria tab, set the OK return code to 200.
+- Save your Job. 
 # License
 Copyright 2019 SMA Technologies
 

@@ -1,0 +1,44 @@
+{
+  "templateid" : "Nutanix-Host-Exit_maintenance_mode",
+  "steps" : [ {
+    "function" : "POST",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/hosts/@hostUuid/exit_maintenance_mode",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\r\n  \"logical_timestamp\": 2\r\n}",
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 201,
+      "responseDataCheck" : {
+        "goodFin" : "true",
+        "badFin" : "false",
+        "attributeToCheck" : "value",
+        "poll" : true,
+        "pollDelay" : 5,
+        "pollInterval" : 5,
+        "pollMaxTime" : 5
+      },
+      "fileName" : null,
+      "variables" : [ ]
+    }
+  } ],
+  "variables" : [ {
+    "name" : "@User",
+    "value" : "[[NutanixUser]]"
+  }, {
+    "name" : "@Password",
+    "value" : "[[NutanixPwd]]"
+  }, {
+    "name" : "@hostUuid",
+    "value" : "??????"
+  } ],
+  "properties" : [ ]
+}

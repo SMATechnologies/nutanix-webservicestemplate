@@ -1,0 +1,71 @@
+{
+  "templateid" : "Nutanix-Host-Enter_maintenance_mode",
+  "steps" : [ {
+    "function" : "POST",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/hosts/@hostUuid/enter_maintenance_mode",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\r\n  \"evacuation_option\": \"LIVE_MIGRATE\",\r\n  \"logical_timestamp\": 3,\r\n  \"non_migratable_vm_option\": \"BLOCK\"\r\n}",
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 201,
+      "responseDataCheck" : null,
+      "fileName" : null,
+      "variables" : [ {
+        "name" : "@task_uuid",
+        "value" : "task_uuid"
+      } ]
+    }
+  }, {
+    "function" : "GET",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/tasks/@task_uuid",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      }, {
+        "attribute" : "task_uuid",
+        "value" : "@task_uuid"
+      } ],
+      "body" : null,
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 200,
+      "responseDataCheck" : {
+        "goodFin" : "SUCCEEDED",
+        "badFin" : "ABORTED/SUSPENDED/FAILED",
+        "attributeToCheck" : "progress_status",
+        "poll" : true,
+        "pollDelay" : 10,
+        "pollInterval" : 5,
+        "pollMaxTime" : 1
+      },
+      "fileName" : null,
+      "variables" : [ ]
+    }
+  } ],
+  "variables" : [ {
+    "name" : "@User",
+    "value" : "[[NutanixUser]]"
+  }, {
+    "name" : "@Password",
+    "value" : "[[NutanixPwd]]"
+  }, {
+    "name" : "@hostUuid",
+    "value" : "??????"
+  } ],
+  "properties" : [ ]
+}

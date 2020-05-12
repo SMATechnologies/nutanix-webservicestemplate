@@ -1,0 +1,98 @@
+{
+  "templateid" : "Nutanix-PowerOn-Off-VMs",
+  "steps" : [ {
+    "function" : "GET",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/vms/?filter=power_state%3D%3Doff&offset=0&length=1",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      }, {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      } ],
+      "body" : null,
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 200,
+      "responseDataCheck" : null,
+      "fileName" : null,
+      "variables" : [ {
+        "name" : "@uuid",
+        "value" : "entities[0].uuid"
+      }, {
+        "name" : "@vmname",
+        "value" : "entities[0].name"
+      } ]
+    }
+  }, {
+    "function" : "POST",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/vms/@uuid/set_power_state",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "uuid",
+        "value" : "@uuid"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\r\n  \"transition\": \"ON\",\r\n  \"uuid\":  \"@uuid\"\r\n}",
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 201,
+      "responseDataCheck" : null,
+      "fileName" : null,
+      "variables" : [ {
+        "name" : "@task_uuid",
+        "value" : "task_uuid"
+      } ]
+    }
+  }, {
+    "function" : "GET",
+    "url" : "[[myNutanixPrism]]/PrismGateway/services/rest/v2.0/tasks/@task_uuid",
+    "request" : {
+      "headers" : [ {
+        "attribute" : "Authorization",
+        "value" : "Basic"
+      }, {
+        "attribute" : "Content-Type",
+        "value" : "application/json"
+      }, {
+        "attribute" : "task_uuid",
+        "value" : "@task_uuid"
+      } ],
+      "body" : null,
+      "fileName" : null
+    },
+    "response" : {
+      "ignoreResult" : false,
+      "stepCompletionCode" : 200,
+      "responseDataCheck" : {
+        "goodFin" : "SUCCEEDED",
+        "badFin" : "ABORTED/SUSPENDED/FAILED",
+        "attributeToCheck" : "progress_status",
+        "poll" : true,
+        "pollDelay" : 10,
+        "pollInterval" : 10,
+        "pollMaxTime" : 10
+      },
+      "fileName" : null,
+      "variables" : [ ]
+    }
+  } ],
+  "variables" : [ {
+    "name" : "@User",
+    "value" : "[[NutanixUser]]"
+  }, {
+    "name" : "@Password",
+    "value" : "[[NutanixPwd]]"
+  } ],
+  "properties" : [ ]
+}
